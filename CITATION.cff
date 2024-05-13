@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+title: >-
+  Snapshot-based Rational Interpolation of Parametric Systems
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Art J. R.
+    family-names: Pelling
+    email: a.pelling@tu-berlin.de
+    orcid: 'https://orcid.org/0000-0003-3228-6069'
+    affiliation: Department of Engineering Acoustics, Technische Universität Berlin
+repository-code: 'https://github.com/artpelling/plti-snapshot-interpolation'
+license: MIT
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.XXXXXXX
+preferred-citation:
+  type: article
+  authors:
+  - given-names: Art J. R.
+    family-names: Pelling
+    email: a.pelling@tu-berlin.de
+    orcid: 'https://orcid.org/0000-0003-3228-6069'
+    affiliation: Department of Engineering Acoustics, Technische Universität Berlin
+  - given-names: Karim
+    family-names: Cherifi
+    email: cherifi@math.tu-berlin.de
+    orcid: 'https://orcid.org/0000-0003-3228-6069'
+    affiliation: Department of Mathematics, Technische Universität Berlin
+  - given-names: Ion V.
+    family-names: Gosea
+    email: gosea@mpi-magdeburg.mpg.de
+    orcid: 'https://orcid.org/0000-0003-3228-6069'
+    affiliation: Max Planck Institute of Dynamics of Complex Technical Systems
+  title: >-
+    Snapshot-based Rational Interpolation of Parametric Systems
+  doi: XXXXXXX
