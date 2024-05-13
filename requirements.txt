@@ -1,0 +1,2 @@
+pymor==2023.1.0
+matplotlib==3.8.1
