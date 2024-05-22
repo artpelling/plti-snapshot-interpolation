@@ -13,3 +13,7 @@ authors:
     affiliation: Department of Engineering Acoustics, Technische Universität Berlin
 repository-code: 'https://github.com/artpelling/plti-snapshot-interpolation'
 license: MIT
+identifiers:
+  - description: latest version
+    type: doi
+    value: https://zenodo.org/doi/10.5281/zenodo.11246111
