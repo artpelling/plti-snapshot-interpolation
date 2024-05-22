@@ -1,14 +1,5 @@
 # Code for Numerical Experiments in "Snapshot-based Rational Interpolation of Parametric Systems"
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
-
-This repository contains code for numerical experiments reported in
-
-> Art J. R. Pelling, Karim Cherifi, Ion V. Gosea
-> **Snapshot-based Rational Interpolation of Parametric Systems**,
-> [*arXiv preprint*](https://arxiv.org/abs/XXXX.XXXXX),
-> 2024
-
 ## Installation
 
 To run the examples and create the plots, Python 3.10 and `virtualenv` is needed.
