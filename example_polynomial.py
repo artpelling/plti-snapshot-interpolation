@@ -10,7 +10,6 @@ from utils import (
     load_example,
     parametric_lti_to_tf,
     plot_2derr,
-    plot_cond,
 )
 
 #====================================================================================================

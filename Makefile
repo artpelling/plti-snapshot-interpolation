@@ -1,6 +1,6 @@
 #!/usr/bin/env make
 
-.PHONY: clean plots
+.PHONY: clean figures
 
 clean :
 	-rm ./figures/*.pdf

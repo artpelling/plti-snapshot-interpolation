@@ -208,31 +208,10 @@ def plot_2derr(sys_orig, sys_itpl, Ep, A, X, Y, xlim, ylim, tol=1e16, name='', t
     conds = np.power(conds, -1, out=np.inf*np.ones_like(conds), where=conds!=0)
     im = ax.pcolormesh(s, p, mags, norm='log', vmin=vmin, vmax=vmax, rasterized=True)
     contour = ax.contour(s, p, conds, levels=[tol], colors=[cmap(np.linspace(0,1,20))[-1]], linewidths=0.5)
-    plt.clabel(contour, inline=1, fontsize='x-small', fmt=rf'\(\tilde{{\kappa}}\!=\!10^{{{int(np.log10(tol))}}}\)', inline_spacing=75)
+    plt.clabel(contour, inline=1, fontsize='x-small', fmt=rf'\(\tilde{{\kappa}}\!=\!10^{{{int(np.log10(tol))}}}\)', inline_spacing=25)
     contour.collections[0].set_label('tol')
     ax.set(title=title, xscale='log', xlabel=r'\(\omega\)', ylabel=r'\(p\)', xlim=xlim, ylim=ylim)
-    cb = plt.colorbar(im, ax=ax, pad=-0.03, shrink=0.314)
+    cb = plt.colorbar(im, ax=ax, pad=-0.03, shrink=0.885)
     cb.ax.tick_params(labelsize='x-small')
     ax.set_box_aspect(1/ratio)
     fig.savefig(export_path / f'{name}_2derr')
-
-
-def plot_cond(Ep, A, X, Y, xlim, ylim, tol=1e16, name='', title=r'\(\kappa(p\mathcal{E}_p-\mathcal{A}-s^{-1}\mathcal{E}_s)\)', vmin=1e-20, vmax=1e-5):
-    fig = plt.figure()
-    fig, ax = plt.subplots()
-    fig.set_figwidth(w)
-    s = np.geomspace(*xlim, 100)
-    p = np.linspace(*ylim, 100)
-    mags = []
-    Es = Y@X
-    for pi in p:
-        K = pi*Ep - A
-        mags.append([np.linalg.cond(K-1/si*Es) for si in s])
-    mags = np.array(mags)
-    im = ax.pcolormesh(s, p, mags, norm='log', rasterized=True)
-    ax.contour(s, p, mags, levels=[tol], colors=cmap([1]))
-    ax.set(title=title, xscale='log', xlabel=r'\(s\)', ylabel=r'\(p\)', xlim=xlim, ylim=ylim)
-    cb = plt.colorbar(im, ax=ax, pad=-0.03, shrink=0.314)
-    cb.ax.tick_params(labelsize='x-small')
-    ax.set_box_aspect(1/ratio)
-    fig.savefig(export_path / f'{name}_cond')
