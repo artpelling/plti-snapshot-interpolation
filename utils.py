@@ -143,7 +143,7 @@ plt.rcParams.update({
 })
 adaptive_opts = {'initial_num': 20}
 
-export_path = Path(__file__).parent.parent / 'figures'
+export_path = Path(__file__).parent / 'figures'
 
 
 def plot_mags(sys_orig, sys_itpl, P, xlim, name=''):
