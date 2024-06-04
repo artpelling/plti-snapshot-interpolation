@@ -1,10 +1,11 @@
-# Code for Numerical Experiments in "Snapshot-based Rational Interpolation of Parametric Systems"
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11246112.svg)](https://doi.org/10.5281/zenodo.11246112)
+# Code for Numerical Experiments in "Snapshot-driven Rational Interpolation of Parametric Systems"
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11246111.svg)](https://doi.org/10.5281/zenodo.11246111)
 
 This repository contains code for numerical experiments reported in
 
-> Art J. R. Pelling, Karim Cherifi, Ion V. Gosea
-> **Snapshot-based Rational Interpolation of Parametric Systems**,
+> Art J. R. Pelling, Karim Cherifi, Ion Victor Gosea, Ennes Sarradj
+> **Snapshot-driven Rational Interpolation of Parametric Systems**,
+> [*arXiv preprint*](https://arxiv.org/abs/2406.01236),
 > 2024
 
 ## Installation

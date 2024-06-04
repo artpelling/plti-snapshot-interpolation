@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 title: >-
-  Code for Numerical Experiments in "Snapshot-based Rational Interpolation
+  Code for Numerical Experiments in "Snapshot-driven Rational Interpolation
   of Parametric Systems"
 message: >-
   "If you use this software, please cite it using the
@@ -18,3 +18,26 @@ identifiers:
   - description: "latest version"
     type: "doi"
     value: "10.5281/zenodo.11246111"
+preferred-citation:
+  type: "unpublished"
+  title: "Snapshot-driven Rational Interpolation for Parametric Systems"
+  doi: "10.48550/arxiv/2406.01236"
+  year: "2024"
+  authors:
+    - given-names: "Art J. R."
+      family-names: "Pelling"
+      email: "a.pelling@tu-berlin.de"
+      orcid: "https://orcid.org/0000-0003-3228-6069"
+      affiliation: "Department of Engineering Acoustics, Technische Universität Berlin"
+    - given-names: "Karim"
+      family-names: "Cherifi"
+      orcid: "https://orcid.org/0000-0003-1294-9291"
+      affiliation: "Department of Mathematics, Technische Universität Berlin"
+    - given-names: "Ion Victor"
+      family-names: "Gosea"
+      orcid: "https://orcid.org/0000-0003-3580-4116"
+      affiliation: "Max Planck Institute for Dynamics of Complex Technical Systems"
+    - given-names: "Ennes"
+      family-names: "Sarradj"
+      orcid: "https://orcid.org/0000-0002-0274-8456"
+      affiliation: "Department of Engineering Acoustics, Technische Universität Berlin"
