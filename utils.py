@@ -3,11 +3,10 @@
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from time import perf_counter
 
 import numpy as np
 import scipy.linalg as spla
-
-from functools import partial
 from pathlib import Path
 
 from pymor.algorithms.to_matrix import to_matrix
@@ -65,7 +64,7 @@ def load_example(name):
         return LTIModel(A, B, C)
 
 
-def parametric_lti_to_tf(sys, r=None, tol=None):
+def plti_to_tf(sys, r=None, tol=None):
     def tf(p, mu=None):
         if r is not None or tol is not None:
             rom = BTReductor(sys, mu=p).reduce(r=r, tol=tol)
@@ -176,7 +175,7 @@ def plot_spectra(IL, ILs, r, xmax, ylim=None, markevery=1, name=''):
     if markevery == 1:
         ax.set_xticks(ranks)
     ax.axvline(r, color=col[-1], linestyle='-', label=r'\(r\)', path_effects=[pe.Stroke(linewidth=1.5, foreground='grey'), pe.Normal()], zorder=2)
-    ax.set(xlabel='Order', xlim=(1, xmax), ylabel='\(\sigma\)', ylim=ylim, title='Singular values')
+    ax.set(xlabel='Order', xlim=(1, xmax), ylabel=r'\(\sigma\)', ylim=ylim, title='Singular values')
     ax.grid()
     ax.legend()
     ax.tick_params(axis='y', which='major', pad=25)
@@ -186,32 +185,35 @@ def plot_spectra(IL, ILs, r, xmax, ylim=None, markevery=1, name=''):
     fig.savefig(export_path / f'{name}_svs')
 
 
-def plot_2derr(sys_orig, sys_itpl, Ep, A, X, Y, xlim, ylim, tol=1e16, name='', title=r'\(\delta(\omega,p)\)', vmin=1e-18, vmax=1e-8):
+def plot_2derr(sys_orig, sys_itpl,
+               #Ep, A, X, Y,
+               xlim, ylim, tol=1e16, path=Path('figures'), kind='', title=r'\(\delta(\omega,p)\)', vmin=1e-16, vmax=1e-2):
     fig = plt.figure()
     fig, ax = plt.subplots()
     fig.set_figwidth(w)
     err = sys_orig - sys_itpl
-    s = np.geomspace(*xlim, 100)
-    p = np.linspace(*ylim, 100)
+    s = np.geomspace(*xlim, 127)
+    p = np.linspace(*ylim, 127)
     mags, conds = [], []
-    Es = Y@X
-    from time import perf_counter
+    #Es = Y@X
+
     tic = perf_counter()
     for pi in p:
-        K = pi*Ep - A
-        val = err.bode(s, mu=pi)[0]
+    #    K = pi*Ep - A
+        val = err.bode(s, mu=pi)[0] / np.abs(sys_orig.bode(s, mu=pi)[0])
         mags.append(np.abs(val, out=np.finfo(np.float64).tiny*np.ones_like(val), where=val!=0))
-        conds.append([estimate_rcond(K-1/si*Es) for si in s])
-    print(perf_counter()-tic)
+    #    conds.append([estimate_rcond(K-1/si*Es) for si in s])
+    print(f'{kind}:\t{perf_counter()-tic:.2f}s')
     mags = np.squeeze(np.concatenate(mags, axis=1)).T
-    conds = np.array(conds)
-    conds = np.power(conds, -1, out=np.inf*np.ones_like(conds), where=conds!=0)
-    im = ax.pcolormesh(s, p, mags, norm='log', vmin=vmin, vmax=vmax, rasterized=True)
-    contour = ax.contour(s, p, conds, levels=[tol], colors=[cmap(np.linspace(0,1,20))[-1]], linewidths=0.5)
-    plt.clabel(contour, inline=1, fontsize='x-small', fmt=rf'\(\tilde{{\kappa}}\!=\!10^{{{int(np.log10(tol))}}}\)', inline_spacing=25)
-    contour.collections[0].set_label('tol')
+    #conds = np.array(conds)
+    #conds = np.power(conds, -1, out=np.inf*np.ones_like(conds), where=conds!=0)
+    im = ax.pcolormesh(s, p, mags, norm='log'), vmin=vmin, vmax=vmax, rasterized=True)
+    #contour = ax.contour(s, p, conds, levels=[tol], colors=[cmap(np.linspace(0,1,20))[-1]], linewidths=0.5)
+    #ax.clabel(contour, inline=1, fontsize='x-small', fmt=rf'\(\tilde{{\kappa}}\!=\!10^{{{int(np.log10(tol))}}}\)', inline_spacing=25)
     ax.set(title=title, xscale='log', xlabel=r'\(\omega\)', ylabel=r'\(p\)', xlim=xlim, ylim=ylim)
     cb = plt.colorbar(im, ax=ax, pad=-0.03, shrink=0.885)
     cb.ax.tick_params(labelsize='x-small')
     ax.set_box_aspect(1/ratio)
-    fig.savefig(export_path / f'{name}_2derr')
+    path = export_path / path
+    path.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path / f'{kind}_2derr')
