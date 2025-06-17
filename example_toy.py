@@ -6,12 +6,8 @@ from pathlib import Path
 
 from interpolation import interpolator, rational_interpolator
 from utils import (
-    assemble_ptf,
     load_example,
-    plti_to_tf,
     plot_2derr,
-    plot_mags,
-    plot_spectra,
 )
 
 #====================================================================================================
