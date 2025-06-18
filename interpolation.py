@@ -7,7 +7,7 @@ from pymor.models.iosys import LTIModel
 from pymor.models.transfer_function import TransferFunction
 from pymor.reductors.loewner import LoewnerReductor
 
-from utils import assemble_ptf, plti_to_tf
+from utils import estimate_rcond, plti_to_tf
 
 
 def rational_interpolator(p, plti, r=None, tol=None, cond_tol=1e6, loewner_opts={}):
@@ -18,17 +18,18 @@ def rational_interpolator(p, plti, r=None, tol=None, cond_tol=1e6, loewner_opts=
     print(f'Dimension of IL: {L.shape[0]}x{L.shape[1]}')
     print(f'Loewner truncation rank: {rom.order}')
 
-    # 2) compute the system matrices
-    UTIV, IWV = rom.B.matrix, rom.C.matrix
-    A = rom.A.matrix
-    Ep = rom.E.matrix
-    B = UTIV[:, -plti.dim_input:]
-    C = IWV[-plti.dim_output:]
-    X = IWV[:-plti.dim_output]
-    Y = UTIV[:, :-plti.dim_input]
+    def tf(s, mu=None):
+        p = mu['p'][0]
+        K = p*rom.E.matrix - rom.A.matrix
+        Zsp = K - 1/s * (rom.B.matrix[:, :-plti.dim_input] @ rom.C.matrix[:-plti.dim_output])
+        rcond = estimate_rcond(Zsp)
+        if rcond == 0 or cond_tol > 1/rcond:
+            return rom.C.matrix[-plti.dim_output:] @ np.linalg.inv(Zsp) @ rom.B.matrix[:, -plti.dim_input:]
+        else:
+            H = rom.transfer_function.eval_tf(p)
+            return LTIModel.from_matrices(H[:plti.order, :plti.order], H[:plti.order, plti.order:], H[plti.order:, :plti.order], H[plti.order:, plti.order:]).transfer_function.eval_tf(s)
 
-    # 3) assemble the transfer function
-    return assemble_ptf(Ep, A, B, C, X, Y, plti.parameters, tol=cond_tol)
+    return rom, TransferFunction(dim_input=plti.dim_input, dim_output=plti.dim_output, tf=tf, parameters=plti.parameters)
 
 
 def interpolator(p, plti, kind=None):
