@@ -19,22 +19,24 @@ def rational_interpolator(p, plti, r=None, tol=None, cond_tol=1e6, loewner_opts=
     print(f'Loewner truncation rank: {rom.order}')
 
     def tf(s, mu=None):
-        p = mu['p'][0]
-        K = p*rom.E.matrix - rom.A.matrix
-        Zsp = K - 1/s * (rom.B.matrix[:, :-plti.dim_input] @ rom.C.matrix[:-plti.dim_output])
-        rcond = estimate_rcond(Zsp)
-        if rcond == 0 or cond_tol > 1/rcond:
-            return rom.C.matrix[-plti.dim_output:] @ np.linalg.inv(Zsp) @ rom.B.matrix[:, -plti.dim_input:]
-        else:
-            H = rom.transfer_function.eval_tf(p)
-            return LTIModel.from_matrices(H[:plti.order, :plti.order], H[:plti.order, plti.order:], H[plti.order:, :plti.order], H[plti.order:, plti.order:]).transfer_function.eval_tf(s)
+        try:
+            p = mu['p'][0]
+            K = p*rom.E.matrix - rom.A.matrix
+            Zsp = K - 1/s * (rom.B.matrix[:, :-plti.dim_input] @ rom.C.matrix[:-plti.dim_output])
+            rcond = estimate_rcond(Zsp)
+            if rcond == 0 or cond_tol > 1/rcond:
+                return rom.C.matrix[-plti.dim_output:] @ np.linalg.inv(Zsp) @ rom.B.matrix[:, -plti.dim_input:]
+            else:
+                H = rom.transfer_function.eval_tf(p)
+                return LTIModel.from_matrices(H[:plti.order, :plti.order], H[:plti.order, plti.order:], H[plti.order:, :plti.order], H[plti.order:, plti.order:]).transfer_function.eval_tf(s)
+        except RuntimeError:
+            return np.zeros((plti.dim_output, plti.dim_input), dtype=np.complex128)
 
     return rom, TransferFunction(dim_input=plti.dim_input, dim_output=plti.dim_output, tf=tf, parameters=plti.parameters)
 
 
 def interpolator(p, plti, kind=None):
     n = plti.order
-    # convert parametric model to large transfer function, i.e. H(p) = [[A(p), B(p)], [C(p), D(p)]]
     sys = plti_to_tf(plti)
     H = sys.freq_resp(p/1j)
     if kind in ('linear', 'quadratic', 'cubic'):

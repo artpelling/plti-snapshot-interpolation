@@ -12,7 +12,7 @@ from utils import (
 
 #====================================================================================================
 # VARIABLES
-plim = (0, 100)  # parameter interval
+plim = (1, 100)  # parameter interval
 n_p = 8  # number of parametric samples
 loewner_opts = {
     'partitioning': 'even-odd', # loewner partitioning ('even-odd', 'half-half', 'same')
@@ -22,8 +22,8 @@ loewner_opts = {
 }
 r = None # if r is None, cutoff is used to determine rank
 loewner_tol = 1e-12  # truncation of singular values
-cond_tol = 1e60  # threshold for switching the computation formulas
-name = 'polynomial'
+cond_tol = 1e48  # threshold for switching the computation formulas
+name = 'rational'
 path = Path(name) / str(n_p)  # path for saving plots
 
 #====================================================================================================
@@ -31,7 +31,6 @@ path = Path(name) / str(n_p)  # path for saving plots
 
 sys = load_example(name)
 # convert parametric model to large transfer function, i.e. H(p) = [[A(p), B(p)], [C(p), D(p)]]
-
 
 #===================================================================================================
 # ALGORITHM
