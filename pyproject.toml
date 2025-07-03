@@ -1,10 +1,10 @@
 [project]
 name = "plti-snapshot-interpolation"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.2.0"
+description = "Code for Numerical Experiments in 'Snapshot-driven Rational Interpolation of Parametric Systems'"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.13,<3.14"
 dependencies = [
-    "matplotlib>=3.10.3",
-    "pymor>=2024.2.0",
+    "matplotlib==3.10.3",
+    "pymor==2024.2.0",
 ]

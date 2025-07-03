@@ -12,8 +12,9 @@ from utils import (
 
 #====================================================================================================
 # VARIABLES
+wlim = (1e-4, 1e4)  # frequency range for plotting
 plim = (0, 100)  # parameter interval
-n_p = 8  # number of parametric samples
+n_ps = (8, 64)  # number of parametric samples
 loewner_opts = {
     'partitioning': 'even-odd', # loewner partitioning ('even-odd', 'half-half', 'same')
     'ordering': 'regular',  # criterion w.r.t. which the splitting is done ('regular' 'magnitude', 'random')
@@ -21,33 +22,22 @@ loewner_opts = {
     'conjugate': False
 }
 r = None # if r is None, cutoff is used to determine rank
-loewner_tol = 1e-12  # truncation of singular values
-cond_tol = 1e60  # threshold for switching the computation formulas
+loewner_tol = 1e-7  # truncation of singular values
+cond_tol = 1e66  # threshold for switching the computation formulas
 name = 'polynomial'
-path = Path(name) / str(n_p)  # path for saving plots
-
-#====================================================================================================
-# INITIALIZATION
-
-sys = load_example(name)
-# convert parametric model to large transfer function, i.e. H(p) = [[A(p), B(p)], [C(p), D(p)]]
-
 
 #===================================================================================================
-# ALGORITHM
-# 1) compute samples of H(p)
-p = np.concatenate([mu['p'] for mu in sys.parameters.space(plim).sample_uniformly(n_p)])
+# INTERPOLATION
 
-kinds = ('linear', 'quadratic', 'cubic', 'barycentric', 'rational')
-for kind in kinds:
-    if kind == 'rational':
-        rom, tf_itpl = rational_interpolator(p, sys, r=r, tol=loewner_tol, cond_tol=cond_tol, loewner_opts=loewner_opts)
-    else:
-        rom, tf_itpl = None, interpolator(p, sys, kind=kind)
-    plotname = name + '-' + kind
-
-    #===================================================================================================
-    # PLOTTING
-    plt.close('all')
-    wlim = (1e-4, 1e4)  # frequency range for plotting
-    plot_2derr(sys.transfer_function, tf_itpl, wlim, plim, rom=rom, tol=cond_tol, path=path, kind=kind)
+sys = load_example(name)
+for n_p in n_ps:
+    p = np.concatenate([mu['p'] for mu in sys.parameters.space(plim).sample_uniformly(n_p)])
+    kinds = ('linear', 'quadratic', 'cubic', 'barycentric', 'rational')
+    for kind in kinds:
+        if kind == 'rational':
+            rom, tf_itpl = rational_interpolator(p, sys, r=r, tol=loewner_tol, cond_tol=cond_tol, loewner_opts=loewner_opts)
+        else:
+            rom, tf_itpl = None, interpolator(p, sys, kind=kind)
+        plotname = name + '-' + kind
+        plt.close('all')
+        plot_2derr(sys.transfer_function, tf_itpl, wlim, plim, rom=rom, tol=cond_tol, path=Path(name) / str(n_p), kind=kind)

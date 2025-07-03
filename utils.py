@@ -2,8 +2,6 @@
 
 from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
-import matplotlib.patheffects as pe
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 from time import perf_counter
 
 import numpy as np
@@ -13,12 +11,11 @@ from pathlib import Path
 from pymor.algorithms.to_matrix import to_matrix
 from pymor.models.iosys import LTIModel
 from pymor.models.transfer_function import TransferFunction
-from pymor.operators.block import BlockColumnOperator, BlockDiagonalOperator, BlockOperator
-from pymor.operators.constructions import InverseOperator, LincombOperator, LowRankOperator
+from pymor.operators.block import BlockOperator
+from pymor.operators.constructions import LincombOperator
 from pymor.operators.numpy import NumpyMatrixOperator
 from pymor.parameters.base import Parameters
 from pymor.parameters.functionals import ExpressionParameterFunctional
-from pymor.reductors.bt import BTReductor
 
 
 #====================================================================================================
@@ -45,7 +42,7 @@ def load_example(name):
         A2 = NumpyMatrixOperator(np.array([[0.1, 0, 0.2], [0, 1, 0], [-0.2, 0, 0]]))
         A3 = NumpyMatrixOperator(np.array([[0, 1, 0], [-1, 0, 0], [0, -10, 0]]))
         p = ExpressionParameterFunctional(list(parameter.keys())[0], parameter)
-        pinv = ExpressionParameterFunctional('1/p', parameter)
+        pinv = ExpressionParameterFunctional('1/(p+1)', parameter)
         A = LincombOperator([A0, A1, A2, A3], [1, p, p*p, pinv])
         B1 = NumpyMatrixOperator(np.array([[1], [0], [1]]))
         B2 = NumpyMatrixOperator(np.array([[0], [1], [0]]))
@@ -74,7 +71,7 @@ def estimate_rcond(M, norm=np.inf):
 # PLOTTING
 
 ratio = (1 + np.sqrt(5)) / 2  # golden ratio
-w = 3.32153
+w = 3.2
 double_column = (w, w/ratio)
 dpi = 200
 font_size = 10.0
@@ -132,8 +129,8 @@ def plot_2derr(sys_orig, sys_itpl, xlim, ylim, rom=None, tol=1e16, path=Path('fi
         color = cmap(np.linspace(0,1,20))[-1]
         ax.contour(s, p, conds, levels=[tol], colors=[color], linewidths=0.5)
         plt.legend([Line2D([0], [0], color=color, lw=0.5)], [rf'\(\tilde{{\kappa}}\!=\!10^{{{int(np.log10(tol))}}}\)'], loc='upper left', fontsize='x-small', framealpha=.8)
-    ax.set(title=title, xscale='log', xlabel=r'\(\omega\)', ylabel=r'\(p\)', xlim=xlim, ylim=ylim)
-    cb = plt.colorbar(im, ax=ax, pad=-0.03, shrink=0.885)
+    ax.set(xscale='log', xlabel=r'\(\omega\)', ylabel=r'\(p\)', xlim=xlim, ylim=ylim)
+    cb = plt.colorbar(im, ax=ax, pad=-0.03, shrink=0.819)
     cb.ax.tick_params(labelsize='x-small')
     ax.set_box_aspect(1/ratio)
     path = export_path / path
