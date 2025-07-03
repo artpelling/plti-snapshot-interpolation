@@ -7,12 +7,11 @@ clean :
 	-rm -rf ./venv
 
 venv : requirements.txt
-	virtualenv venv -p=3.10
+	virtualenv venv -p=3.13
 	./venv/bin/python -m pip install --upgrade pip
 	./venv/bin/python -m pip install -r requirements.txt
 	@touch venv
 
 figures : venv
-	./venv/bin/python example_toy.py
 	./venv/bin/python example_polynomial.py
-	./venv/bin/python example_penzl.py
+	./venv/bin/python example_rational.py

@@ -14,7 +14,7 @@ from utils import (
 # VARIABLES
 wlim = (1e-4, 1e4)  # frequency range for plotting
 plim = (0, 100)  # parameter interval
-n_ps = (8, 64)  # number of parametric samples
+n_ps = (8, 64)  # numbers of parametric samples
 loewner_opts = {
     'partitioning': 'even-odd', # loewner partitioning ('even-odd', 'half-half', 'same')
     'ordering': 'regular',  # criterion w.r.t. which the splitting is done ('regular' 'magnitude', 'random')
@@ -23,10 +23,10 @@ loewner_opts = {
 }
 r = None # if r is None, cutoff is used to determine rank
 loewner_tol = 1e-7  # truncation of singular values
-cond_tol = 1e66  # threshold for switching the computation formulas
-name = 'polynomial'
+cond_tol = 1e42  # threshold for switching the computation formulas
+name = 'rational'
 
-#===================================================================================================
+#====================================================================================================
 # INTERPOLATION
 
 sys = load_example(name)
