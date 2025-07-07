@@ -129,7 +129,7 @@ def plot_2derr(sys_orig, sys_itpl, xlim, ylim, rom=None, tol=1e16, path=Path('fi
         color = cmap(np.linspace(0,1,20))[-1]
         ax.contour(s, p, conds, levels=[tol], colors=[color], linewidths=0.5)
         plt.legend([Line2D([0], [0], color=color, lw=0.5)], [rf'\(\tilde{{\kappa}}\!=\!10^{{{int(np.log10(tol))}}}\)'], loc='upper left', fontsize='x-small', framealpha=.8)
-    ax.set(xscale='log', xlabel=r'\(\omega\)', ylabel=r'\(p\)', xlim=xlim, ylim=ylim)
+    ax.set(xscale='log', xlabel=r'\(\omega\) (Hz)', ylabel=r'\(p\)', xlim=xlim, ylim=ylim)
     cb = plt.colorbar(im, ax=ax, pad=-0.03, shrink=0.819)
     cb.ax.tick_params(labelsize='x-small')
     ax.set_box_aspect(1/ratio)
