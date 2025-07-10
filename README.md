@@ -10,9 +10,9 @@ This repository contains code for numerical experiments reported in
 
 ## Installation
 
-To run the examples and create the plots, Python 3.10 and `virtualenv` is needed.
+To run the examples and create the plots, Python 3.13 and `virtualenv` or `uv` is needed.
 
-The necessary packages are listed in [`requirements.txt`](requirements.txt).
+The necessary packages for installation with `virtualenv` are listed in [`requirements.txt`](requirements.txt).
 They can be installed in a virtual environment by, e.g.,
 
 ```bash
@@ -37,6 +37,14 @@ make figures
 ```
 
 which will create the virtual environment if necessary.
+
+For usage with `uv` simply run
+
+``` shell
+uv run example_polynomial.py
+uv run example_rational.py
+```
+
 
 ## Author
 
