@@ -4,9 +4,8 @@
 This repository contains code for numerical experiments reported in
 
 > Art J. R. Pelling, Karim Cherifi, Ion Victor Gosea, Ennes Sarradj
-> **Snapshot-driven Rational Interpolation of Parametric Systems**,
-> [*arXiv preprint*](https://arxiv.org/abs/2406.01236),
-> 2024
+> **Snapshot-driven Rational Interpolation of Parametric Systems**, Automatica 189, 2026, p. 113023.
+> [doi:10.1016/j.automatica.2026.113023](https://doi.org/10.1016/j.automatica.2026.113023)
 
 ## Installation
 
